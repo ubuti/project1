@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Video Stream</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            text-align: center;
+        }
+        .stream-container {
+            margin: 20px auto;
+        }
+        .stream-container img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+        }
+        .logout-btn {
+            padding: 5px 10px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Live Stream</h2>
+    <div class="stream-container">
+        <img src="{{ url_for('video_feed') }}" alt="Video stream">
+    </div>
+    <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+</body>
+</html>
