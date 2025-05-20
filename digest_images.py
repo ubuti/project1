@@ -5,12 +5,12 @@ from datetime import datetime  # Changed import for cleaner code usage
 # --- Configuration ---
 
 # Directory to scan for files
-directory = "/home/inuit/project1/cameraimg"
+directory = "/home/kit/project1/cameraimg"
 
 # MariaDB connection configuration
 db_config = {
-    "user": "inuit",
-    "password": "klabautermann",
+    "user": "kit",
+    "password": "fisto",
     "host": "localhost",
     "database": "cam_db"
 }

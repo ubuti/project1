@@ -35,34 +35,41 @@ picam2 = picamera2.Picamera2()
 def generate_frames():
     frame_counter = 0  # To count frames
     while True:
-        # Capture a frame from the camera
-        frame = picam2.capture_array()
+        try:
+            # Capture a frame from the camera
+            frame = picam2.capture_array()
 
-        # Convert the frame from RGBA to BGR (OpenCV default)
-        frame = cv2.cvtColor(frame, cv2.COLOR_RGBA2BGR)
+            # Convert the frame from RGBA to BGR (OpenCV default)
+            frame = cv2.cvtColor(frame, cv2.COLOR_RGBA2BGR)
 
-        # Save every 10th frame to the USB drive
-        if frame_counter % 10 == 0:
-            timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-            savepath = f"/home/inuit/project1/cameraimg/captured_{timestamp}.jpg"
-            cv2.imwrite(savepath, frame)
+            # Save every 10th frame to the USB drive
+            if frame_counter % 10 == 0:
+                timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+                savepath = f"/home/kit/project1/cameraimg/captured_{timestamp}.jpg"
+                cv2.imwrite(savepath, frame)
 
-        frame_counter += 1
+            frame_counter += 1
+        except:
+            print("Error during image generation...")
+            break
+            
+        try:
+            # Encode the frame as JPEG
+            encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 60]
+            ret, buffer = cv2.imencode('.jpg', frame, encode_param)
 
-        # Encode the frame as JPEG
-        encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 80]
-        ret, buffer = cv2.imencode('.jpg', frame, encode_param)
+            # Convert the frame buffer to bytes
+            frame = buffer.tobytes()
 
-        # Convert the frame buffer to bytes
-        frame = buffer.tobytes()
+            # Yield the frame in MJPEG format
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
-        # Yield the frame in MJPEG format
-        yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-
-        # Sleep to control the frame rate
-        time.sleep(0.01)
-
+            # Sleep to control the frame rate
+            time.sleep(0.1)
+        except:
+            print("Error during streaming...")
+            break
 # used to manage connection attempts
 PASSWORD_HASH = generate_password_hash(str(PASSWORD))
 
