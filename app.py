@@ -30,6 +30,15 @@ limiter = Limiter(app=app, key_func=get_remote_address)
 
 # initialize camera
 picam2 = picamera2.Picamera2()
+config = cam.create_preview_configuration()
+cam.configure(config)
+cam.start()
+
+# Exit function
+def stop_cam(cam):
+    cam.stop()
+    cam.close()
+return None
 
 # Function to generate frames from the camera
 def generate_frames():
@@ -90,15 +99,19 @@ def video():
 
 # Start the camera and app when the script is run
 if __name__ == '__main__':
-    picam2.start()
-    # Specify your SSL certificate and key files
-    context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
-    context.options |= ssl.OP_NO_SSLv2
-    context.options |= ssl.OP_NO_SSLv3
-    context.options |= ssl.OP_NO_TLSv1
-    context.options |= ssl.OP_NO_TLSv1_1
-    context.set_ciphers('ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384')
-    context.load_cert_chain(certfile='server.crt', keyfile='server.key')
-    # Start Flask app with SSL (HTTPS)
-    app.run(host='0.0.0.0', port=8000, ssl_context=context)
-
+    try:
+        picam2.start()
+        # Specify your SSL certificate and key files
+        context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+        context.options |= ssl.OP_NO_SSLv2
+        context.options |= ssl.OP_NO_SSLv3
+        context.options |= ssl.OP_NO_TLSv1
+        context.options |= ssl.OP_NO_TLSv1_1
+        context.set_ciphers('ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384')
+        context.load_cert_chain(certfile='server.crt', keyfile='server.key')
+        # Start Flask app with SSL (HTTPS)
+        app.run(host='0.0.0.0', port=8000, ssl_context=context)
+    except:
+        print("An error occured .. shutting down ..")
+    finally:
+        stop_cam(cam)
