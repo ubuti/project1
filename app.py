@@ -19,7 +19,7 @@ app = Flask(__name__)
 auth = HTTPBasicAuth()
 
 # log in credentials 
-load_dotenv('./logcred.env')
+load_dotenv('./credentials/logcred.env')
 
 # Replace these with your own username and password
 USERNAME = os.environ.get('CAMERA_USERNAME')
@@ -108,7 +108,7 @@ if __name__ == '__main__':
         context.options |= ssl.OP_NO_TLSv1
         context.options |= ssl.OP_NO_TLSv1_1
         context.set_ciphers('ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384')
-        context.load_cert_chain(certfile='server.crt', keyfile='server.key')
+        context.load_cert_chain(certfile='./credentials/server.crt', keyfile='./credentials/server.key')
         # Start Flask app with SSL (HTTPS)
         app.run(host='0.0.0.0', port=8000, ssl_context=context)
     except:
