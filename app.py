@@ -14,6 +14,9 @@ from flask_limiter.util import get_remote_address
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
+# Suppress Flask-Limiter warning
+warnings.filterwarnings("ignore", message="Using the in-memory storage for tracking rate limits")
+
 # Initialize app and auth
 app = Flask(__name__)
 auth = HTTPBasicAuth()
@@ -30,15 +33,15 @@ limiter = Limiter(app=app, key_func=get_remote_address)
 
 # initialize camera
 picam2 = picamera2.Picamera2()
-config = cam.create_preview_configuration()
-cam.configure(config)
-cam.start()
+config = picam2.create_preview_configuration()
+picam2.configure(config)
+#picam2.start()
 
 # Exit function
 def stop_cam(cam):
     cam.stop()
     cam.close()
-return None
+    return None
 
 # Function to generate frames from the camera
 def generate_frames():
@@ -75,7 +78,7 @@ def generate_frames():
                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
             # Sleep to control the frame rate
-            time.sleep(0.1)
+            time.sleep(0.2)
         except:
             print("Error during streaming...")
             break
@@ -114,4 +117,4 @@ if __name__ == '__main__':
     except:
         print("An error occured .. shutting down ..")
     finally:
-        stop_cam(cam)
+        stop_cam(picam2)

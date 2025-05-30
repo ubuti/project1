@@ -25,7 +25,7 @@ try:
         
     with open(test_file, 'w') as f:
         f.write("USB write test")
-    os.remove(test_file)
+    #os.remove(test_file)
     print("USB write permissions OK")
 except Exception as e:
     print(f"USB write error: {e}")
@@ -41,6 +41,7 @@ try:
     savepath = "/home/kit/project1/cameraimg/test/test.jpg"
     cv2.imwrite(savepath, frame)
     print("Image write to usb OK ")
+    #os.remove(savepath)
 except Exception as e:
     print(f"USB write error: {e}")
 finally:
