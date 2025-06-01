@@ -15,6 +15,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 
 # Suppress Flask-Limiter warning
+import warnings 
 warnings.filterwarnings("ignore", message="Using the in-memory storage for tracking rate limits")
 
 # Initialize app and auth
