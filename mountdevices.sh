@@ -10,7 +10,7 @@ if [ "$EUID" -ne 0 ]; then
 fi
 
 # Base mount point directory
-MOUNT_BASE="/home/kit/project1/cameraimg"
+MOUNT_BASE="/home/kit/project1"
 
 # Create base mount directory if it doesn't exist
 mkdir -p "$MOUNT_BASE"
@@ -46,7 +46,7 @@ for device in /dev/sda*; do
     fi
     
     # Create mount point
-    mount_point="$MOUNT_BASE/$device_name"
+    mount_point="$MOUNT_BASE/cameraimg"
     mkdir -p "$mount_point"
     
     # Try to determine filesystem type
@@ -55,8 +55,8 @@ for device in /dev/sda*; do
     if [ -n "$fs_type" ]; then
         echo "  → Filesystem: $fs_type"
         
-        # Mount the device
-        if mount -t "$fs_type" "$device" "$mount_point" 2>/dev/null; then
+        # Mount the device with explicit vfat type
+        if mount -t vfat "$device" "$mount_point" 2>/dev/null; then
             echo "  → Successfully mounted at: $mount_point"
             
             # Set permissions for user access
