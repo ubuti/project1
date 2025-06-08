@@ -6,4 +6,4 @@ Connected to a pi camera (camera module 2), it serves a live stream accessbile v
 
 Part of the implementation is a basic security mechanism to prevent unauthorized access, as well as a usb-drive based image storage.
 
-
+.
