@@ -1,0 +1,3 @@
+set usb device path in app.py
+implement setup.py script to ru automatically
+undo the mount-usb.service when it becomes obsolete

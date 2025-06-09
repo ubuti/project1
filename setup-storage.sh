@@ -9,6 +9,14 @@ if [ $lines -eq 0 ]; then
     exit 1
 fi
 
+if [ $lines -eq 1 ]; then
+    echo "One USB device found. Trying set up."
+    best_path=$(df -H | grep "/dev/sda" | awk '{print $6}')
+    touch storagepath
+    echo "$best_path" > storagepath
+    exit 1
+fi
+
 # Store df output in array - each line as separate element
 mapfile -t output < <(df -H | grep "/dev/sda")
 

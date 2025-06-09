@@ -20,15 +20,16 @@ except Exception as e:
 
 # Test write access
 try:
-    with open("/home/kit/project1/storagepath", 'r') as t:
+    
+    with open("../storagepath", 'r') as t:
         path = t.read()
-    #os.makedirs(path, exist_ok=True)
-    path = path.rsplit()[0]
-    test_file = os.path.join(path, "test.txt")
-
+    path = path.replace("\n", "")
+    path_testdir = os.path.join(path, "test")
+    os.makedirs(path_testdir, exist_ok=True)
+    test_file = os.path.join(path_testdir, "test.txt")
+    print("Creating file")
     with open(test_file, 'w') as f:
         f.write("USB write test")
-    #os.remove(test_file)
     print("USB write permissions OK")
 except Exception as e:
     print(f"USB write error: {e}")
@@ -41,10 +42,9 @@ try:
     cam.start()
     frame = cam.capture_array()
     frame = cv2.cvtColor(frame, cv2.COLOR_RGBA2BGR)
-    savepath = os.path.join(path, "test.jpg")
+    savepath = os.path.join(path_testdir, "test.jpg")
     cv2.imwrite(savepath, frame)
     print("Image write to usb OK ")
-    #os.remove(savepath)
 except Exception as e:
     print(f"USB write error: {e}")
 finally:
